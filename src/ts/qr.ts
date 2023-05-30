@@ -6,7 +6,6 @@
 
 import { getUserInfo, _userAgent, getEntityData, getEntitiesData, updateEntity, getFilterEntityData } from "./endpoints.js"
 import { InterfaceElement, Request } from "./types.js"
-import { createQrContext } from "./createQrContext.js"
 
 const loginContainer: InterfaceElement = document.getElementById('login-container')
 const app: InterfaceElement = document.getElementById('app')
@@ -94,11 +93,8 @@ export class SignIn {
 
     private signIn(): void {
         const form: InterfaceElement = document.querySelector('#login-form')
-        const password: InterfaceElement = form.querySelector('#password')
-        const userName: InterfaceElement = form.querySelector('#username')
-        const trigger: InterfaceElement = form.querySelector('#login')
-        createQrContext()
-        new QRCode(document.getElementById("qrcode"), "https://www.ribosomatic.com");
+        // @ts-ignore
+        new QRCode(document.getElementById("qrcode"), "${}");
         //this.accessToken()
     }
 
