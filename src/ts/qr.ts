@@ -57,7 +57,7 @@ export class SignIn {
         <div class="login_window">
         <div class="login_header">
           <img src="./public/src/assets/pictures/app_logo.png">
-          <h1 class="login_title">QR PARA VISITA</h1>
+          <h1 class="login_title">QR VISITA</h1>
           <div class="input_detail">
             <label for="ingress-date"><i class="fa-solid fa-user"></i> ${data.firstName} ${data.firstLastName}</label><br>
             <label for="ingress-date"><i class="fa-solid fa-address-card"></i> ${data.dni}</label><br>
@@ -67,7 +67,7 @@ export class SignIn {
           </div>
         </div>
         <div class="login_content">
-            <div id="qrcode"></div>
+            <div id="qrcode" style="display:flex;justify-content:center"></div>
         </div>
 
         <div class="login_footer">
