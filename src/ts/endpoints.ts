@@ -1,7 +1,7 @@
 // @filename: endpoints.ts
 
 // Imports
-import { SignIn } from "./login.js"
+import { SignIn } from "./qr.js"
 import { Endpoint, Request } from "./types.js"
 
 // GENERAL URL

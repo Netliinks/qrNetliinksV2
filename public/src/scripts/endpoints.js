@@ -1,6 +1,6 @@
 // @filename: endpoints.ts
 // Imports
-import { SignIn } from "./login.js";
+import { SignIn } from "./qr.js";
 // GENERAL URL
 // ===================================================
 const NetliinksUrl = 'https://backend.netliinks.com:443/rest/entities/';
