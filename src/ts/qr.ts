@@ -18,7 +18,6 @@ const connectionHeader = {
     Cookie: "JSESSIONID=CDD208A868EAABD1F523BB6F3C8946AF",
 }
 
-const platformSystem: string = 'clients'
 
 const reqOP: Request = {
     url: 'https://backend.netliinks.com:443/oauth/token',
@@ -33,14 +32,31 @@ export class SignIn {
             if (currentUser.error === 'invalid_token') {
                 this.accessToken()
             }
-            if(currentUser.username === "consulta"){
+            if(currentUser.username === "qr"){
                 const valores = window.location.search;
                 const urlParams = new URLSearchParams(valores);
                 var token = urlParams.get('key');
-                let data = await getEntityData("Visit", `${token}`)
-                console.log(data)
-                this.showLogin(data)
+                if(token == null || token == '' || token == undefined){
+                    this.show404()
+                }else{
+                    reg(token)
+                }                
             }
+        }
+
+        const reg = async (token: any) => {
+            await getEntityData("Visit", `${token}`)
+            .then((res) => {
+                if(res.visitState?.name == "Finalizado"){
+                    this.showFinish()
+                }else{
+                    this.showQr(res)
+                }
+            })
+            .catch(error => {
+                this.show404()
+                console.log('error', error)
+            })
         }
 
         if (accessToken) {
@@ -51,7 +67,7 @@ export class SignIn {
 
     }
 
-    public showLogin(data: any): void {
+    public showQr(data: any): void {
         loginContainer.style.display = 'flex !important'
         loginContainer.innerHTML = `
         <div class="login_window">
@@ -89,12 +105,98 @@ export class SignIn {
       </div>
         `
         this.signIn()
+        this.intervalQr(data)
+    }
+
+    public showFinish(): void {
+        loginContainer.style.display = 'flex !important'
+        loginContainer.innerHTML = `
+        <div class="login_window">
+            <div class="login_header">
+                <img src="./public/src/assets/pictures/app_logo.png">
+                <h1 class="login_title">PORTAL QR VISITA</h1>
+                <div class="input_detail">
+                    <label for="ingress-date"><i class="fa-solid fa-check-square" style="color:green;"></i> La visita ha finalizado</label><br>
+                </div>
+                </div>
+                <div class="login_content" style="display:flex;justify-content:center">
+                <br>
+                    <img src="./public/src/assets/pictures/in-time.png" width="50%" height="50%">
+                </div>
+
+                <div class="login_footer">
+                <div class="login_icons">
+                    <i class="fa-regular fa-house"></i>
+                    <i class="fa-regular fa-user"></i>
+                    <i class="fa-regular fa-inbox"></i>
+                    <i class="fa-regular fa-file"></i>
+                    <i class="fa-regular fa-computer"></i>
+                    <i class="fa-regular fa-mobile"></i>
+                </div>
+                <p>Accede a todas nuestras herramientas</p>
+
+                <div class="foot_brief">
+                    <p>Desarrollado por</p>
+                    <img src="./public/src/assets/pictures/login_logo.png">
+                </div>
+            </div>
+        </div>
+        `
+    }
+
+    public show404(): void {
+        loginContainer.style.display = 'flex !important'
+        loginContainer.innerHTML = `
+        <div class="login_window">
+            <div class="login_header">
+                <img src="./public/src/assets/pictures/app_logo.png">
+                <h1 class="login_title">PORTAL QR VISITA</h1>
+                <div class="input_detail">
+                    <label for="ingress-date"><i class="fa-solid fa-exclamation-circle" style="color:red;"></i> Ha ocurrido un error</label><br>
+                </div>
+                </div>
+                <div class="login_content" style="display:flex;justify-content:center">
+                <br>
+                    <img src="./public/src/assets/pictures/404.jpg" width="75%" height="75%">
+                </div>
+
+                <div class="login_footer">
+                <div class="login_icons">
+                    <i class="fa-regular fa-house"></i>
+                    <i class="fa-regular fa-user"></i>
+                    <i class="fa-regular fa-inbox"></i>
+                    <i class="fa-regular fa-file"></i>
+                    <i class="fa-regular fa-computer"></i>
+                    <i class="fa-regular fa-mobile"></i>
+                </div>
+                <p>Accede a todas nuestras herramientas</p>
+
+                <div class="foot_brief">
+                    <p>Desarrollado por</p>
+                    <img src="./public/src/assets/pictures/login_logo.png">
+                </div>
+            </div>
+        </div>
+        `
+    }
+
+    private intervalQr(data: any){
+        var counter = 10;
+        let change = () => {
+            counter *= 10;
+            let randomKey = { key: Math.floor(Math.random() * 999999) };
+            setTimeout(() => {
+                // @ts-ignore
+                new QRCode(document.getElementById("qrcode"), `${randomKey.key}`);
+            }, counter);
+        }
+        setTimeout(change, counter);
+
+        
     }
 
     private signIn(): void {
         const form: InterfaceElement = document.querySelector('#login-form')
-        // @ts-ignore
-        new QRCode(document.getElementById("qrcode"), "${}");
         //this.accessToken()
     }
 
@@ -102,7 +204,7 @@ export class SignIn {
         localStorage.removeItem('access_token')
         const reqOptions: {} = {
             method: reqOP.method,
-            body: `grant_type=password&username=consulta&password=consulta`,
+            body: `grant_type=password&username=qr&password=qr`,
             headers: connectionHeader
         }
 
