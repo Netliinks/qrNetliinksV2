@@ -49,7 +49,10 @@ export class SignIn {
             let date = anio + "-" + mes + "-" + dia;
             await getEntityData("Visit", `${token}`)
                 .then((res) => {
-                if (res.visitState?.name == "Finalizado") {
+                if (res.type == "Guardia") {
+                    this.show404();
+                }
+                else if (res.visitState?.name == "Finalizado") {
                     this.showFinish();
                 }
                 else if (res.creationDate < date) {
@@ -231,7 +234,26 @@ export class SignIn {
             await updateEntity('Visit', data.id, raw)
                 .then((res) => {
                 // @ts-ignore
-                new QRCode(document.getElementById("qrcode"), newToken);
+                //new QRCode(document.getElementById("qrcode"), newToken)
+                let qrCode = new QRCodeStyling({
+                    //width: 300,
+                    //height: 300,
+                    type: "svg",
+                    data: newToken,
+                    image: "./public/src/assets/pictures/qr.png",
+                    dotsOptions: {
+                        color: "#1D4C82FF",
+                        type: "rounded"
+                    },
+                    //backgroundOptions: {
+                    //    color: "#e9ebee",
+                    //},
+                    /*imageOptions: {
+                        crossOrigin: "anonymous",
+                        margin: 20
+                    }*/
+                });
+                qrCode.append(document.getElementById("qrcode"));
                 counter = 60000;
                 setTimeout(change, counter);
             })
