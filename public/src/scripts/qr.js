@@ -47,10 +47,8 @@ export class SignIn {
             if (mes < 10)
                 mes = '0' + mes; //agrega cero si el menor de 10
             let date = anio + "-" + mes + "-" + dia;
-            console.log(date);
             await getEntityData("Visit", `${token}`)
                 .then((res) => {
-                console.log(res.creationDate);
                 if (res.visitState?.name == "Finalizado") {
                     this.showFinish();
                 }
@@ -234,7 +232,6 @@ export class SignIn {
                 .then((res) => {
                 // @ts-ignore
                 new QRCode(document.getElementById("qrcode"), newToken);
-                console.log(newToken);
                 counter = 60000;
                 setTimeout(change, counter);
             })
