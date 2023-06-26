@@ -255,9 +255,9 @@ export class SignIn {
                         color: "#1D4C82FF",
                         type: "rounded"
                     },
-                    //backgroundOptions: {
-                    //    color: "#e9ebee",
-                    //},
+                    backgroundOptions: {
+                        color: "#FFFFFF",
+                    }
                     /*imageOptions: {
                         crossOrigin: "anonymous",
                         margin: 20
