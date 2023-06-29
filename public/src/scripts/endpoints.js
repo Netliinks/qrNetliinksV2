@@ -210,6 +210,23 @@ export const sendMail = async (raw) => {
         .then(result => console.log(result))
         .catch(error => console.log('error', error));
 };
+export const updateTokenVisit = async (id) => {
+    const raw = JSON.stringify({
+        "id": `${id}`,
+    });
+    const req = {
+        url: 'https://backend.netliinks.com:443/rest/services/UserServiceBean/updateTokenVisit',
+        method: 'POST'
+    };
+    const requestOptions = {
+        method: req.method,
+        headers: headers,
+        body: raw,
+        redirect: 'follow'
+    };
+    const res = await fetch(req.url, requestOptions);
+    return res;
+};
 export const getFile = async (fileUrl) => {
     const url = 'https://backend.netliinks.com:443/rest/files?fileRef=';
     const requestOptions = {
