@@ -348,9 +348,6 @@ export class SignIn {
                 });
                 qrCode.append(document.getElementById("qrcode"));
                 let confirmation = await updateTokenVisit(data.id);
-                //let json = JSON.stringify(request);
-                //let parse = JSON.parse(json);
-                //let confirmation = parse;
                 if (confirmation.ok == true && confirmation.status == 200) {
                     if (i < 3) {
                         i++;
