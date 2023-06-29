@@ -365,7 +365,7 @@ export class SignIn {
                 //let parse = JSON.parse(json);
                 //let confirmation = parse;
                 if(confirmation.ok == true && confirmation.status == 200){
-                    if(i <= 3){
+                    if(i < 3){
                         i++
                         counter = 10 //60000
                         setTimeout(change, counter)
@@ -378,7 +378,7 @@ export class SignIn {
                 
             })
             .catch(error => {
-                alert("Error "+error)
+                //alert("Error "+error)
                 console.log('error', error)
             })
             
