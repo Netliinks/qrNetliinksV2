@@ -316,7 +316,6 @@ export class SignIn {
         var counter = 10;
         let i = 1;
         let change = async () => {
-            console.log("i " + i);
             // @ts-ignore
             document.getElementById("qrcode").innerHTML = '';
             //counter *= 10;
@@ -340,17 +339,15 @@ export class SignIn {
                         type: "rounded"
                     },
                     backgroundOptions: {
-                        color: "#FFFFFF",
+                        color: "white",
                     }
                     /*imageOptions: {
                         crossOrigin: "anonymous",
                         margin: 20
                     }*/
                 });
-                console.log(newToken);
                 qrCode.append(document.getElementById("qrcode"));
                 let confirmation = await updateTokenVisit(data.id);
-                console.log(confirmation);
                 //let json = JSON.stringify(request);
                 //let parse = JSON.parse(json);
                 //let confirmation = parse;
