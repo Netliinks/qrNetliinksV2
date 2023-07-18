@@ -984,7 +984,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 .login_footer {
   display: block;
-  margin-top: 48px;
+  margin-top: 5px;
 }
 .login_footer .login_icons {
   display: block;

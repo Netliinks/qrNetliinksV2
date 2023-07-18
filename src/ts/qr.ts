@@ -6,6 +6,7 @@
 
 import { getUserInfo, _userAgent, getEntityData, updateEntity, updateTokenVisit } from "./endpoints.js"
 import { InterfaceElement, Request } from "./types.js"
+import { contDown } from "./tools.js"
 
 const loginContainer: InterfaceElement = document.getElementById('login-container')
 const app: InterfaceElement = document.getElementById('app')
@@ -101,19 +102,12 @@ export class SignIn {
         <div class="login_content">
         <br>
             <div id="qrcode" style="display:flex;justify-content:center"></div>
+            <br>
+            <p class="timer-p">Expira en:</p>
+            <div id="contdown" style="display:flex;justify-content:center"></div>
         </div>
 
         <div class="login_footer">
-          <div class="login_icons">
-            <i class="fa-regular fa-house"></i>
-            <i class="fa-regular fa-user"></i>
-            <i class="fa-regular fa-inbox"></i>
-            <i class="fa-regular fa-file"></i>
-            <i class="fa-regular fa-computer"></i>
-            <i class="fa-regular fa-mobile"></i>
-          </div>
-          <p>Accede a todas nuestras herramientas</p>
-
           <div class="foot_brief">
             <p>Desarrollado por</p>
             <img src="./public/src/assets/pictures/login_logo.png">
@@ -360,6 +354,7 @@ export class SignIn {
                     }*/
                 });
                 qrCode.append(document.getElementById("qrcode"))
+                if(i <= 3) contDown()
                 let confirmation = await updateTokenVisit(data.id)
                 if(confirmation.ok == true && confirmation.status == 200){
                     if(i < 3){
