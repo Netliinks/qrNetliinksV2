@@ -339,19 +339,15 @@ export class SignIn {
                     //width: 300,
                     //height: 300,
                     type: "svg",
+                    //typeNumber:0,
                     data: newToken,
-                    //image: "./public/src/assets/pictures/qr.png",
+                    image: "./public/src/assets/pictures/qr.png",
                     dotsOptions: {
-                        color: "#1D4C82FF",
+                        color: "#002337FF",
                         //type: "rounded"
                     },
                     backgroundOptions: {
                         color: "white",
-                    },
-                    qrOptions: {
-                        typeNumber: "3",
-                        mode: "Byte",
-                        errorCorrectionLevel: "L"
                     }
                     /*imageOptions: {
                         crossOrigin: "anonymous",
