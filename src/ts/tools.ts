@@ -424,3 +424,38 @@ export const contDown = () => {
           .setAttribute("stroke-dasharray", circleDasharray);
       }
 }
+
+export const getSearch = async (param: string, value: string, table: string, date: string) => {
+  let raw = JSON.stringify({
+      "filter": {
+          "conditions": [
+              {
+                "property": `${param}`,
+                "operator": "=",
+                "value": `${value}`
+              },
+              {
+                "property": `type`,
+                "operator": "=",
+                "value": `Cliente`
+              },
+              {
+                "property": `visitState.name`,
+                "operator": "<>",
+                "value": `Finalizado`
+              },
+              {
+                "property": `creationDate`,
+                "operator": "=",
+                "value": `${date}`
+              },
+          ]
+      },
+      fetchPlan: 'full',
+      sort: '-createdDate'
+  });
+  let data = await getFilterEntityData(`${table}`, raw);
+  if(data.length != 0){
+      return data[0]
+  }
+}

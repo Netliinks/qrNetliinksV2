@@ -6,7 +6,7 @@
 
 import { getUserInfo, _userAgent, getEntityData, updateEntity, updateTokenVisit } from "./endpoints.js"
 import { InterfaceElement, Request } from "./types.js"
-import { contDown } from "./tools.js"
+import { contDown, getSearch } from "./tools.js"
 
 const loginContainer: InterfaceElement = document.getElementById('login-container')
 const app: InterfaceElement = document.getElementById('app')
@@ -36,16 +36,16 @@ export class SignIn {
             if(currentUser.username === "qr"){
                 const valores = window.location.search;
                 const urlParams = new URLSearchParams(valores);
-                var token = urlParams.get('key');
-                if(token == null || token == '' || token == undefined){
-                    this.show404()
+                var dni = urlParams.get('visitas');
+                if(dni == null || dni == '' || dni == undefined){
+                    this.show404("Parámetro no encontrado")
                 }else{
-                    reg(token)
+                    reg(dni)
                 }                
             }
         }
 
-        const reg = async (token: any) => {
+        const reg = async (dni: any) => {
             let fecha = new Date(); //Fecha actual
             let mes: any = fecha.getMonth()+1 //obteniendo mes
             let dia: any = fecha.getDate() //obteniendo dia
@@ -55,22 +55,16 @@ export class SignIn {
             if(mes<10)
                 mes='0'+mes //agrega cero si el menor de 10
             let date: any = anio+"-"+mes+"-"+dia
-            await getEntityData("Visit", `${token}`)
+            await getSearch("dni", `${dni}`, "Visit", `${date}`)
             .then((res) => {
-                if(res.type == "Guardia"){
-                    this.show404()
-                }else if(res.visitState?.name == "Finalizado"){
-                    this.showFinish()
-                }else if(res.creationDate < date){
-                    this.showExpired(res.creationDate)
-                }else if(res.creationDate > date){
-                    this.showWait(res.creationDate)
+                if(res == undefined){
+                    this.show404("Visita no encontada")
                 }else{
-                    this.showQr(res)
+                    this.showQr(res);
                 }
             })
             .catch(error => {
-                this.show404()
+                this.show404(error)
                 console.log('error', error)
             })
         }
@@ -125,7 +119,7 @@ export class SignIn {
           });
     }
 
-    public showFinish(): void {
+    public show404(message: string): void {
         loginContainer.innerHTML = ''
         loginContainer.style.display = 'flex !important'
         loginContainer.innerHTML = `
@@ -134,44 +128,7 @@ export class SignIn {
                 <img src="./public/src/assets/pictures/app_logo.png">
                 <h1 class="login_title">PORTAL QR VISITA</h1>
                 <div class="input_detail">
-                    <label for="ingress-date"><i class="fa-solid fa-check-square" style="color:green;"></i> La visita ha finalizado</label><br>
-                </div>
-                </div>
-                <div class="login_content" style="display:flex;justify-content:center">
-                <br>
-                    <img src="./public/src/assets/pictures/in-time.png" width="50%" height="50%">
-                </div>
-
-                <div class="login_footer">
-                <div class="login_icons">
-                    <i class="fa-regular fa-house"></i>
-                    <i class="fa-regular fa-user"></i>
-                    <i class="fa-regular fa-inbox"></i>
-                    <i class="fa-regular fa-file"></i>
-                    <i class="fa-regular fa-computer"></i>
-                    <i class="fa-regular fa-mobile"></i>
-                </div>
-                <p>Accede a todas nuestras herramientas</p>
-
-                <div class="foot_brief">
-                    <p>Desarrollado por</p>
-                    <img src="./public/src/assets/pictures/login_logo.png">
-                </div>
-            </div>
-        </div>
-        `
-    }
-
-    public show404(): void {
-        loginContainer.innerHTML = ''
-        loginContainer.style.display = 'flex !important'
-        loginContainer.innerHTML = `
-        <div class="login_window">
-            <div class="login_header">
-                <img src="./public/src/assets/pictures/app_logo.png">
-                <h1 class="login_title">PORTAL QR VISITA</h1>
-                <div class="input_detail">
-                    <label for="ingress-date"><i class="fa-solid fa-exclamation-circle" style="color:red;"></i> Ha ocurrido un error</label><br>
+                    <label for="ingress-date"><i class="fa-solid fa-exclamation-circle" style="color:red;"></i> Ha ocurrido un error: ${message}.</label><br>
                 </div>
                 </div>
                 <div class="login_content" style="display:flex;justify-content:center">
@@ -245,80 +202,6 @@ export class SignIn {
         })
     }
 
-    public showExpired(fecha: String): void {
-        loginContainer.innerHTML = ''
-        loginContainer.style.display = 'flex !important'
-        loginContainer.innerHTML = `
-        <div class="login_window">
-            <div class="login_header">
-                <img src="./public/src/assets/pictures/app_logo.png">
-                <h1 class="login_title">PORTAL QR VISITA</h1>
-                <div class="input_detail">
-                    <label for="ingress-date"><i class="fa-solid fa-exclamation-circle" style="color:red;"></i> Visita expirada el ${fecha}</label><br>
-                </div>
-                </div>
-                <div class="login_content" style="display:flex;justify-content:center">
-                <br>
-                    <img src="./public/src/assets/pictures/expired.png" width="75%" height="75%">
-                </div>
-
-                <div class="login_footer">
-                <div class="login_icons">
-                    <i class="fa-regular fa-house"></i>
-                    <i class="fa-regular fa-user"></i>
-                    <i class="fa-regular fa-inbox"></i>
-                    <i class="fa-regular fa-file"></i>
-                    <i class="fa-regular fa-computer"></i>
-                    <i class="fa-regular fa-mobile"></i>
-                </div>
-                <p>Accede a todas nuestras herramientas</p>
-
-                <div class="foot_brief">
-                    <p>Desarrollado por</p>
-                    <img src="./public/src/assets/pictures/login_logo.png">
-                </div>
-            </div>
-        </div>
-        `
-    }
-
-    public showWait(fecha: String): void {
-        loginContainer.innerHTML = ''
-        loginContainer.style.display = 'flex !important'
-        loginContainer.innerHTML = `
-        <div class="login_window">
-            <div class="login_header">
-                <img src="./public/src/assets/pictures/app_logo.png">
-                <h1 class="login_title">PORTAL QR VISITA</h1>
-                <div class="input_detail">
-                    <label for="ingress-date"><i class="fa-solid fa-exclamation-circle" style="color:orange;"></i> Visita en espera para el ${fecha}</label><br>
-                </div>
-                </div>
-                <div class="login_content" style="display:flex;justify-content:center">
-                <br>
-                    <img src="./public/src/assets/pictures/espera.png" width="75%" height="75%">
-                </div>
-
-                <div class="login_footer">
-                <div class="login_icons">
-                    <i class="fa-regular fa-house"></i>
-                    <i class="fa-regular fa-user"></i>
-                    <i class="fa-regular fa-inbox"></i>
-                    <i class="fa-regular fa-file"></i>
-                    <i class="fa-regular fa-computer"></i>
-                    <i class="fa-regular fa-mobile"></i>
-                </div>
-                <p>Accede a todas nuestras herramientas</p>
-
-                <div class="foot_brief">
-                    <p>Desarrollado por</p>
-                    <img src="./public/src/assets/pictures/login_logo.png">
-                </div>
-            </div>
-        </div>
-        `
-    }
-
     private intervalQr(data: any){
         var counter = 10
         let i = 1;
@@ -366,7 +249,7 @@ export class SignIn {
                         this.showReload()
                     }
                 }else{
-                    this.show404()
+                    this.show404("Fallo de servicio")
                 }
                 
             })
