@@ -6,7 +6,8 @@ import { Endpoint, Request } from "./types.js"
 
 // GENERAL URL
 // ===================================================
-const NetliinksUrl: string = 'https://backend.netliinks.com:443/rest/entities/'
+//const NetliinksUrl: string = 'https://backend.netliinks.com:443/rest/entities/'
+const NetliinksUrl: string = 'http://192.168.1.40:8080/rest/entities/'
 // ===================================================
 
 // TOOLS
@@ -33,7 +34,7 @@ headers.append('Cookie', "JSESSIONID=CDD208A868EAABD1F523BB6F3C8946AF")
  */
 export const getToken = async (mail: string, password: string): Endpoint => {
     const URL: string =
-        'https://backend.netliinks.com:443/oauth/token'
+        'http://192.168.1.40:8080/oauth/token'
 
     const ReqOptions: {} = {
         method: 'POST',
@@ -60,7 +61,7 @@ export const getToken = async (mail: string, password: string): Endpoint => {
  */
 export const getUserInfo = async (): Endpoint => {
     const userInfo: Request = {
-        url: 'https://backend.netliinks.com:443/rest/userInfo?fetchPlan=full',
+        url: 'http://192.168.1.40:8080/rest/userInfo?fetchPlan=full',
         method: 'GET'
     }
 
@@ -249,7 +250,7 @@ export const updateTokenVisit = async (id: string): Endpoint => {
         "id": `${id}`,
     }) 
     const req = {
-        url: 'https://backend.netliinks.com:443/rest/services/UserServiceBean/updateTokenVisit',
+        url: 'http://192.168.1.40:8080/rest/services/UserServiceBean/updateTokenVisit',
         method: 'POST'
     }
 

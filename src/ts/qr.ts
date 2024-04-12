@@ -21,7 +21,7 @@ const connectionHeader = {
 
 
 const reqOP: Request = {
-    url: 'https://backend.netliinks.com:443/oauth/token',
+    url: 'http://192.168.1.40:8080/oauth/token',
     method: 'POST'
 }
 
@@ -55,10 +55,16 @@ export class SignIn {
             if(mes<10)
                 mes='0'+mes //agrega cero si el menor de 10
             let date: any = anio+"-"+mes+"-"+dia
-            await getSearch("dni", `${dni}`, "Visit", `${date}`)
+            const hour = fecha.getHours();
+            const minutes  = fecha.getMinutes();
+            const hourFormat = `${hour.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:00`;
+
+            await getSearch("dni", `${dni}`, "Visit", `${date}`, `${hourFormat}`)
             .then((res) => {
                 if(res == undefined){
                     this.show404("Visita no encontada")
+                }else if(res == "expired"){
+                    this.show404("Visita ha pasado 24 horas")
                 }else{
                     this.showQr(res);
                 }

@@ -379,7 +379,7 @@ export const contDown = () => {
             .setAttribute("stroke-dasharray", circleDasharray);
     }
 };
-export const getSearch = async (param, value, table, date) => {
+export const getSearch = async (param, value, table, date, hourFormat) => {
     let raw = JSON.stringify({
         "filter": {
             "conditions": [
@@ -397,12 +397,7 @@ export const getSearch = async (param, value, table, date) => {
                     "property": `visitState.name`,
                     "operator": "<>",
                     "value": `Finalizado`
-                },
-                {
-                    "property": `creationDate`,
-                    "operator": "=",
-                    "value": `${date}`
-                },
+                }
             ]
         },
         fetchPlan: 'full',
@@ -410,6 +405,25 @@ export const getSearch = async (param, value, table, date) => {
     });
     let data = await getFilterEntityData(`${table}`, raw);
     if (data.length != 0) {
-        return data[0];
+        if (data[0]?.calculatedDate ?? "" != "") {
+            if (data[0]?.creationDate == date) {
+                return data[0];
+            }
+            else if (data[0]?.calculatedDate == date) {
+                let horaActual = new Date(`${date}T${hourFormat}`);
+                let horaExpira = new Date(`${data[0]?.calculatedDate}T${data[0]?.calculatedTime}`);
+                if (horaActual.getTime() > horaExpira.getTime()) {
+                    return "expired";
+                }
+                else {
+                    return data[0];
+                }
+            }
+        }
+        else if (data[0]?.calculatedDate ?? "" == "") {
+            if (data[0]?.creationDate == date) {
+                return data[0];
+            }
+        }
     }
 };

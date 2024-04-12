@@ -3,7 +3,8 @@
 import { SignIn } from "./qr.js";
 // GENERAL URL
 // ===================================================
-const NetliinksUrl = 'https://backend.netliinks.com:443/rest/entities/';
+//const NetliinksUrl: string = 'https://backend.netliinks.com:443/rest/entities/'
+const NetliinksUrl = 'http://192.168.1.40:8080/rest/entities/';
 // ===================================================
 // TOOLS
 // ===================================================
@@ -26,7 +27,7 @@ headers.append('Cookie', "JSESSIONID=CDD208A868EAABD1F523BB6F3C8946AF");
  * @returns token
  */
 export const getToken = async (mail, password) => {
-    const URL = 'https://backend.netliinks.com:443/oauth/token';
+    const URL = 'http://192.168.1.40:8080/oauth/token';
     const ReqOptions = {
         method: 'POST',
         body: `grant_type=password&username=${mail}&password=${password}`,
@@ -51,7 +52,7 @@ export const getToken = async (mail, password) => {
  */
 export const getUserInfo = async () => {
     const userInfo = {
-        url: 'https://backend.netliinks.com:443/rest/userInfo?fetchPlan=full',
+        url: 'http://192.168.1.40:8080/rest/userInfo?fetchPlan=full',
         method: 'GET'
     };
     const options = {
@@ -215,7 +216,7 @@ export const updateTokenVisit = async (id) => {
         "id": `${id}`,
     });
     const req = {
-        url: 'https://backend.netliinks.com:443/rest/services/UserServiceBean/updateTokenVisit',
+        url: 'http://192.168.1.40:8080/rest/services/UserServiceBean/updateTokenVisit',
         method: 'POST'
     };
     const requestOptions = {
