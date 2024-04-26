@@ -3,7 +3,7 @@
 import { SignIn } from "./qr.js";
 // GENERAL URL
 // ===================================================
-const NetliinksUrl = 'https://backend.netliinks.com:443/rest/entities/';
+const NetliinksUrl = 'https://backendtest.netliinks.com:443/rest/entities/';
 // ===================================================
 // TOOLS
 // ===================================================
@@ -26,7 +26,7 @@ headers.append('Cookie', "JSESSIONID=CDD208A868EAABD1F523BB6F3C8946AF");
  * @returns token
  */
 export const getToken = async (mail, password) => {
-    const URL = 'https://backend.netliinks.com:443/oauth/token';
+    const URL = 'https://backendtest.netliinks.com:443/oauth/token';
     const ReqOptions = {
         method: 'POST',
         body: `grant_type=password&username=${mail}&password=${password}`,
@@ -51,7 +51,7 @@ export const getToken = async (mail, password) => {
  */
 export const getUserInfo = async () => {
     const userInfo = {
-        url: 'https://backend.netliinks.com:443/rest/userInfo?fetchPlan=full',
+        url: 'https://backendtest.netliinks.com:443/rest/userInfo?fetchPlan=full',
         method: 'GET'
     };
     const options = {
@@ -149,7 +149,7 @@ export const deleteEntity = async (entities, entity) => {
 };
 export const registerEntity = async (raw, type) => {
     const req = {
-        url: 'https://backend.netliinks.com:443/rest/entities/',
+        url: 'https://backendtest.netliinks.com:443/rest/entities/',
         method: 'POST'
     };
     const requestOptions = {
@@ -164,7 +164,7 @@ export const registerEntity = async (raw, type) => {
 export const filterEntities = async (user) => { };
 export const setPassword = async (raw) => {
     const req = {
-        url: 'https://backend.netliinks.com:443/rest/services/UserServiceBean/updatePassword',
+        url: 'https://backendtest.netliinks.com:443/rest/services/UserServiceBean/updatePassword',
         method: 'POST'
     };
     const requestOptions = {
@@ -180,7 +180,7 @@ export const setPassword = async (raw) => {
 };
 export const setUserRole = async (raw) => {
     const req = {
-        url: 'https://backend.netliinks.com:443/rest/services/UserServiceBean/assignRol',
+        url: 'https://backendtest.netliinks.com:443/rest/services/UserServiceBean/assignRol',
         method: 'POST'
     };
     const requestOptions = {
@@ -196,7 +196,7 @@ export const setUserRole = async (raw) => {
 };
 export const sendMail = async (raw) => {
     const req = {
-        url: 'https://backend.netliinks.com:443/rest/services/UserServiceBean/sendByEmailInfo',
+        url: 'https://backendtest.netliinks.com:443/rest/services/UserServiceBean/sendByEmailInfo',
         method: 'POST'
     };
     const requestOptions = {
@@ -215,7 +215,7 @@ export const updateTokenVisit = async (id) => {
         "id": `${id}`,
     });
     const req = {
-        url: 'https://backend.netliinks.com:443/rest/services/UserServiceBean/updateTokenVisit',
+        url: 'https://backendtest.netliinks.com:443/rest/services/UserServiceBean/updateTokenVisit',
         method: 'POST'
     };
     const requestOptions = {
@@ -228,7 +228,7 @@ export const updateTokenVisit = async (id) => {
     return res;
 };
 export const getFile = async (fileUrl) => {
-    const url = 'https://backend.netliinks.com:443/rest/files?fileRef=';
+    const url = 'https://backendtest.netliinks.com:443/rest/files?fileRef=';
     const requestOptions = {
         method: 'GET',
         headers: headers,
@@ -243,7 +243,7 @@ export const getFile = async (fileUrl) => {
     return file;
 };
 export const setFile = async (file) => {
-    const url = `https://backend.netliinks.com:443/rest/files?name=${file.name}`;
+    const url = `https://backendtest.netliinks.com:443/rest/files?name=${file.name}`;
     const requestOptions = {
         method: 'POST',
         headers: {
